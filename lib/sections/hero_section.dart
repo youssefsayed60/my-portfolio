@@ -66,7 +66,7 @@ class _HeroSectionState extends State<HeroSection>
           alignment: Alignment.center,
           children: [
             Container(
-              constraints: const BoxConstraints(maxWidth: 500, maxHeight: 650),
+              constraints: const BoxConstraints(maxWidth: 420, maxHeight: 560),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
                 border: Border.all(color: AppColors.cyan, width: 2),
@@ -252,12 +252,13 @@ class _HeroSectionState extends State<HeroSection>
 
   Widget _buildCreativePhoto(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
-    final cardSize = isDesktop ? 400.0 : 300.0;
+    final cardWidth = isDesktop ? 340.0 : 260.0;
+    final cardHeight = cardWidth * 1.25;
 
     return MouseRegion(
       onHover: (event) {
         if (!isDesktop) return;
-        final size = cardSize;
+        final size = cardWidth;
         final x = (event.localPosition.dx - size / 2) / (size / 2);
         final y = (event.localPosition.dy - size / 2) / (size / 2);
         setState(() {
@@ -286,8 +287,8 @@ class _HeroSectionState extends State<HeroSection>
               GestureDetector(
                 onTap: () => _showImageLightbox(context),
                 child: Container(
-                  width: cardSize,
-                  height: cardSize,
+                  width: cardWidth,
+                  height: cardHeight,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(36),
                     color: AppColors.bgDarkSurface,
@@ -301,7 +302,7 @@ class _HeroSectionState extends State<HeroSection>
                         Image.asset(
                           CVData.profileImage,
                           fit: BoxFit.cover,
-                          alignment: const Alignment(0.05, 0.05),
+                          alignment: Alignment.center,
                           errorBuilder: (context, error, stackTrace) => Container(
                             color: AppColors.bgCard,
                             child: const Icon(
