@@ -111,7 +111,7 @@ class _NavbarState extends State<Navbar> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Port ',
+                                  text: 'Youssef ',
                                   style: GoogleFonts.outfit(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w800,
@@ -119,7 +119,7 @@ class _NavbarState extends State<Navbar> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: 'folio',
+                                  text: 'Sayed',
                                   style: GoogleFonts.outfit(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w800,
