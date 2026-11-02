@@ -8,9 +8,10 @@ class AppColors {
   static const Color bgCardHover = Color(0xFF2E2E33);
 
   // Primaries & Accents — calm indigo palette
-  static const Color cyan = Color(0xFF6366F1);   // indigo (replaces neon cyan)
+  static const Color cyan = Color(0xFF6366F1);   // indigo
   static const Color blue = Color(0xFF818CF8);   // soft indigo-blue
-  static const Color purple = Color(0xFF94A3B8); // slate (replaces vivid purple)
+  static const Color babyBlue = Color(0xFF38BDF8); // baby blue
+  static const Color purple = Color(0xFF38BDF8); // baby blue (alias)
   static const Color violet = Color(0xFF4F46E5); // deeper indigo
   static const Color emerald = Color(0xFF34D399);
   static const Color amber = Color(0xFFFBBF24);
@@ -26,11 +27,18 @@ class AppColors {
   static const Color glassBorder = Color(0x336366F1);
   static const Color glassBorderHover = Color(0x806366F1);
   static const Color cyanGlow = Color(0x336366F1);
-  static const Color purpleGlow = Color(0x3394A3B8);
+  static const Color purpleGlow = Color(0x3338BDF8);
+  static const Color babyBlueGlow = Color(0x3338BDF8);
 
   // Gradients
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [cyan, blue],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static const LinearGradient babyBlueGradient = LinearGradient(
+    colors: [babyBlue, blue],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

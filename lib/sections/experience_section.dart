@@ -73,10 +73,124 @@ class _ExperienceCard extends StatelessWidget {
     required this.isFirst,
   });
 
+  Widget _buildIconBadge(Color accentColor) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        gradient: isFirst
+            ? AppColors.primaryGradient
+            : AppColors.babyBlueGradient,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: accentColor.withValues(alpha: 0.35),
+            blurRadius: 16,
+          ),
+        ],
+      ),
+      child: const Icon(
+        Icons.business_center_rounded,
+        color: Color(0xFFF4F4F5),
+        size: 24,
+      ),
+    );
+  }
+
+  Widget _buildTitleColumn(Color accentColor, bool isDesktop) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Wrap(
+          spacing: 10,
+          runSpacing: 6,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text(
+              experience.role,
+              style: GoogleFonts.outfit(
+                fontSize: isDesktop ? 22 : 18,
+                fontWeight: FontWeight.w800,
+                color: AppColors.textWhite,
+              ),
+            ),
+            if (experience.isCurrent)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.emerald.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.emerald,
+                    width: 1,
+                  ),
+                ),
+                child: Text(
+                  'CURRENT ROLE',
+                  style: GoogleFonts.firaCode(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.emerald,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Text(
+          experience.company,
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: accentColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDatePill() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 14,
+        vertical: 6,
+      ),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2E2E33).withValues(alpha: 0.8),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.glassBorder,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.calendar_today_rounded,
+            size: 13,
+            color: AppColors.cyan,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            experience.period,
+            style: GoogleFonts.firaCode(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
-    final accentColor = isFirst ? AppColors.cyan : AppColors.purple;
+    final accentColor = isFirst ? AppColors.cyan : AppColors.babyBlue;
 
     return GlassCard(
       glowColor: accentColor,
@@ -86,124 +200,35 @@ class _ExperienceCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Header: Role, Period, Company
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Company Icon Badge
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  gradient: isFirst
-                      ? AppColors.primaryGradient
-                      : AppColors.purpleGradient,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: accentColor.withValues(alpha: 0.35),
-                      blurRadius: 16,
-                    ),
-                  ],
-                ),
-                child: const Icon(
-                  Icons.business_center_rounded,
-                  color: Color(0xFFF4F4F5),
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-
-              // Title and Company
-              Expanded(
-                child: Column(
+          isDesktop
+              ? Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Wrap(
-                      spacing: 10,
-                      runSpacing: 6,
-                      crossAxisAlignment: WrapCrossAlignment.center,
+                    _buildIconBadge(accentColor),
+                    const SizedBox(width: 16),
+                    Expanded(child: _buildTitleColumn(accentColor, isDesktop)),
+                    const SizedBox(width: 16),
+                    _buildDatePill(),
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          experience.role,
-                          style: GoogleFonts.outfit(
-                            fontSize: isDesktop ? 22 : 18,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.textWhite,
-                          ),
-                        ),
-                        if (experience.isCurrent)
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.emerald.withValues(alpha: 0.15),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: AppColors.emerald,
-                                width: 1,
-                              ),
-                            ),
-                            child: Text(
-                              'CURRENT ROLE',
-                              style: GoogleFonts.firaCode(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.emerald,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ),
+                        _buildIconBadge(accentColor),
+                        const SizedBox(width: 14),
+                        Expanded(child: _buildTitleColumn(accentColor, isDesktop)),
                       ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      experience.company,
-                      style: GoogleFonts.inter(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: accentColor,
-                      ),
+                    const SizedBox(height: 14),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: _buildDatePill(),
                     ),
                   ],
                 ),
-              ),
-
-              // Date Pill
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF2E2E33).withValues(alpha: 0.8),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AppColors.glassBorder,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.calendar_today_rounded,
-                      size: 13,
-                      color: AppColors.cyan,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      experience.period,
-                      style: GoogleFonts.firaCode(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
           const SizedBox(height: 20),
 
           // Divider
