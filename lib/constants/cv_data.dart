@@ -10,7 +10,7 @@ class CVData {
   static const String email = 'youseefsayed60@gmail.com';
   static const String phone = '01094348682';
   static const String internationalPhone = '+201094348682';
-  static const String linkedIn = 'www.linkedin.com/in/youssef-sayed-395812445';
+  static const String linkedIn = 'https://www.linkedin.com/in/youssef-sayed-395812445';
   static const String github = 'https://github.com';
   static const String profileImage = 'assets/images/profile.jpg';
 
