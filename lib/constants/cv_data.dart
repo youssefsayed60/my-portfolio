@@ -217,7 +217,7 @@ class CVData {
       description:
           'A cross-platform mobile application designed to facilitate seamless skill exchange among users. '
           'Allows each user to showcase their unique skills, barter knowledge, and learn new skills from '
-          'peers through an interactive, gamified system of challenges, skill quizzes, and achievement milestones.',
+          'peers through an interactive, gamified system of challenges, skill quizzes with AI-Model, and achievement milestones.',
       techStack: [
         'Flutter',
         'Dart',

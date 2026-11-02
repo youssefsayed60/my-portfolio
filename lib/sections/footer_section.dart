@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_colors.dart';
 import '../constants/cv_data.dart';
 import '../widgets/responsive_builder.dart';
@@ -9,13 +8,6 @@ class FooterSection extends StatelessWidget {
   final VoidCallback onBackToTop;
 
   const FooterSection({super.key, required this.onBackToTop});
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +48,7 @@ class FooterSection extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    '${CVData.name} • Flutter Engineer',
+                    '${CVData.name} • Flutter Developer',
                     style: GoogleFonts.outfit(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
@@ -93,42 +85,6 @@ class FooterSection extends StatelessWidget {
             color: Colors.white.withValues(alpha: 0.05),
           ),
           const SizedBox(height: 24),
-
-          // Bottom Bar
-          Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            spacing: 20,
-            runSpacing: 12,
-            children: [
-              Text(
-                '© 2026 ${CVData.name}. All rights reserved. Clean Architecture & Responsive UI.',
-                style: GoogleFonts.inter(
-                  fontSize: 13,
-                  color: AppColors.textMuted,
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _FooterIcon(
-                    icon: Icons.work_rounded,
-                    onTap: () => _launchUrl(CVData.linkedIn),
-                  ),
-                  const SizedBox(width: 12),
-                  _FooterIcon(
-                    icon: Icons.email_outlined,
-                    onTap: () => _launchUrl('mailto:${CVData.email}'),
-                  ),
-                  const SizedBox(width: 12),
-                  _FooterIcon(
-                    icon: Icons.chat_bubble_rounded,
-                    onTap: () => _launchUrl('https://wa.me/201094348682'),
-                  ),
-                ],
-              ),
-            ],
-          ),
         ],
       ),
     );
