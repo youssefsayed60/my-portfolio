@@ -40,7 +40,7 @@ class CVData {
     ExperienceItem(
       role: 'Flutter Developer',
       company: 'NTG Clarity',
-      period: '09/2025 – Present',
+      period: '09/2025 â€“ Present',
       duration: 'Ongoing',
       isCurrent: true,
       bulletPoints: [
@@ -63,7 +63,7 @@ class CVData {
     ExperienceItem(
       role: 'Flutter Developer Intern',
       company: 'NTG Clarity',
-      period: '09/2024 – 09/2025',
+      period: '09/2024 â€“ 09/2025',
       duration: '1 Year',
       isCurrent: false,
       bulletPoints: [
@@ -93,6 +93,7 @@ class CVData {
       icon: Icons.flutter_dash,
       category: SkillCategory.mobile,
       tags: ['Flutter', 'Dart', 'Web & Mobile', 'Animations'],
+      url: 'https://flutter.dev',
     ),
     SkillItem(
       name: 'Advanced State Management',
@@ -100,6 +101,7 @@ class CVData {
       icon: Icons.account_tree_outlined,
       category: SkillCategory.mobile,
       tags: ['Bloc', 'Cubit', 'Provider', 'RiverPod'],
+      url: 'https://bloclibrary.dev',
     ),
     SkillItem(
       name: 'Firebase Ecosystem',
@@ -107,6 +109,7 @@ class CVData {
       icon: Icons.local_fire_department,
       category: SkillCategory.mobile,
       tags: ['Authentication', 'Firestore', 'Realtime DB', 'FCM', 'Storage'],
+      url: 'https://firebase.google.com',
     ),
     SkillItem(
       name: 'Push & Local Notifications',
@@ -114,6 +117,7 @@ class CVData {
       icon: Icons.notifications_active_outlined,
       category: SkillCategory.mobile,
       tags: ['Firebase FCM', 'Local Notifications', 'Background Tasks', 'Deep Linking'],
+      url: 'https://firebase.google.com/docs/cloud-messaging',
     ),
     SkillItem(
       name: 'Clean Architecture & MVVM',
@@ -121,6 +125,7 @@ class CVData {
       icon: Icons.layers_outlined,
       category: SkillCategory.architectureAndTools,
       tags: ['Clean Architecture', 'MVVM', 'MVC', 'Repository Pattern', 'OOP Principles'],
+      url: 'https://www.google.com/search?q=Flutter+Clean+Architecture+MVVM',
     ),
     SkillItem(
       name: 'RESTful API Integration',
@@ -128,6 +133,7 @@ class CVData {
       icon: Icons.http_outlined,
       category: SkillCategory.architectureAndTools,
       tags: ['Dio', 'HTTP', 'JSON Serialization', 'JWT Auth', 'WebSockets'],
+      url: 'https://pub.dev/packages/dio',
     ),
 
     // Database Development
@@ -137,6 +143,7 @@ class CVData {
       icon: Icons.storage_outlined,
       category: SkillCategory.database,
       tags: ['SQL', 'PL/SQL', 'Relational DB', 'Queries', 'Optimization'],
+      url: 'https://www.google.com/search?q=SQL+and+PL+SQL+Database',
     ),
     SkillItem(
       name: 'Relational Database Design',
@@ -144,6 +151,7 @@ class CVData {
       icon: Icons.table_chart_outlined,
       category: SkillCategory.database,
       tags: ['Normalization', 'ERD', 'PostgreSQL', 'MySQL', 'SQLite'],
+      url: 'https://www.google.com/search?q=Relational+Database+Design+Principles',
     ),
 
     // Other Programming Skills
@@ -153,6 +161,7 @@ class CVData {
       icon: Icons.coffee,
       category: SkillCategory.programming,
       tags: ['Java', 'Spring Framework', 'Spring Boot', 'REST APIs'],
+      url: 'https://spring.io/projects/spring-boot',
     ),
     SkillItem(
       name: 'Python & Flask',
@@ -160,6 +169,7 @@ class CVData {
       icon: Icons.terminal_outlined,
       category: SkillCategory.programming,
       tags: ['Python 3', 'Flask', 'Automation', 'Scripting'],
+      url: 'https://flask.palletsprojects.com',
     ),
     SkillItem(
       name: 'TypeScript & JavaScript',
@@ -167,6 +177,7 @@ class CVData {
       icon: Icons.javascript_outlined,
       category: SkillCategory.programming,
       tags: ['TypeScript', 'JavaScript', 'ES6+', 'Async/Await'],
+      url: 'https://www.typescriptlang.org',
     ),
     SkillItem(
       name: 'Angular & Frontend',
@@ -174,6 +185,7 @@ class CVData {
       icon: Icons.web,
       category: SkillCategory.programming,
       tags: ['Angular', 'SPA', 'Components', 'RxJS'],
+      url: 'https://angular.dev',
     ),
     SkillItem(
       name: 'C++ & Core OOP',
@@ -181,6 +193,7 @@ class CVData {
       icon: Icons.memory_outlined,
       category: SkillCategory.programming,
       tags: ['C++', 'OOP', 'Data Structures', 'Algorithms'],
+      url: 'https://isocpp.org',
     ),
     SkillItem(
       name: 'Oracle APEX',
@@ -188,6 +201,7 @@ class CVData {
       icon: Icons.cloud_done_outlined,
       category: SkillCategory.programming,
       tags: ['Oracle APEX', 'PL/SQL', 'Enterprise Apps'],
+      url: 'https://apex.oracle.com',
     ),
 
     // Tools & Platform
@@ -197,6 +211,7 @@ class CVData {
       icon: Icons.alt_route_rounded,
       category: SkillCategory.architectureAndTools,
       tags: ['Android Studio', 'VS Code', 'Git', 'GitHub', 'Firebase Console', 'Debugging'],
+      url: 'https://git-scm.com',
     ),
 
     // Soft Skills
@@ -206,6 +221,7 @@ class CVData {
       icon: Icons.psychology_outlined,
       category: SkillCategory.softSkills,
       tags: ['Analytical Thinking', 'Fast Learner', 'Adaptability', 'Time Management', 'Teamwork'],
+      url: 'https://www.google.com/search?q=Problem+Solving+and+Growth+Mindset+Software+Engineering',
     ),
   ];
 

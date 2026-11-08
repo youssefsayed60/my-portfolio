@@ -11,98 +11,126 @@ class ProjectsSection extends StatelessWidget {
   const ProjectsSection({super.key});
 
   void _showProjectModal(BuildContext context, ProjectItem project) {
+    final isMobile = Responsive.isMobile(context);
+    final isSmall = Responsive.isSmallMobile(context);
+
     showDialog(
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+        insetPadding: EdgeInsets.symmetric(
+          horizontal: isMobile ? 14 : 20,
+          vertical: 24,
+        ),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 750, maxHeight: 800),
-          child: GlassCard(
-            glowColor: project.accentColor,
-            padding: const EdgeInsets.all(32),
-            borderRadius: 24,
+          constraints: const BoxConstraints(maxWidth: 720, maxHeight: 750),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.bgDarkSurface,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: AppColors.glassBorder,
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.5),
+                  blurRadius: 28,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.all(isSmall ? 16 : (isMobile ? 20 : 28)),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Header
+                  // Responsive Modal Header (no overflow)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              color: project.accentColor.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Icon(
-                              project.icon,
-                              color: project.accentColor,
-                              size: 28,
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                project.title,
-                                style: GoogleFonts.outfit(
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppColors.textWhite,
-                                ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(9),
+                              decoration: BoxDecoration(
+                                color: project.accentColor.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                              Text(
-                                project.role,
-                                style: GoogleFonts.inter(
-                                  fontSize: 14,
-                                  color: project.accentColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                              child: Icon(
+                                project.icon,
+                                color: project.accentColor,
+                                size: isSmall ? 20 : 22,
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    project.title,
+                                    style: GoogleFonts.outfit(
+                                      fontSize: isSmall ? 18 : 20,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.textWhite,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    project.role,
+                                    style: GoogleFonts.inter(
+                                      fontSize: 12,
+                                      color: project.accentColor,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       IconButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.close, color: Colors.white),
+                        icon: const Icon(Icons.close, color: AppColors.textWhite, size: 20),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 18),
 
                   // Overview
                   Text(
                     'Project Overview',
                     style: GoogleFonts.outfit(
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textWhite,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   Text(
                     project.description,
                     style: GoogleFonts.inter(
-                      fontSize: 15,
-                      height: 1.7,
+                      fontSize: 13,
+                      height: 1.6,
                       color: AppColors.textBody,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Architecture Banner
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: project.accentColor.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
+                      color: AppColors.bgCard,
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: project.accentColor.withValues(alpha: 0.3),
                       ),
@@ -112,14 +140,14 @@ class ProjectsSection extends StatelessWidget {
                         Icon(
                           Icons.architecture_rounded,
                           color: project.accentColor,
-                          size: 24,
+                          size: 20,
                         ),
-                        const SizedBox(width: 14),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             project.architecture,
                             style: GoogleFonts.inter(
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.w600,
                               color: AppColors.textWhite,
                             ),
@@ -128,36 +156,36 @@ class ProjectsSection extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Key Highlights
                   Text(
                     'Engineering Highlights & Implementation',
                     style: GoogleFonts.outfit(
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textWhite,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Column(
                     children: project.highlights.map((highlight) {
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Icon(
                               Icons.check_circle_rounded,
                               color: project.accentColor,
-                              size: 18,
+                              size: 15,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 highlight,
                                 style: GoogleFonts.inter(
-                                  fontSize: 14,
+                                  fontSize: 12.5,
                                   height: 1.5,
                                   color: AppColors.textBody,
                                 ),
@@ -168,30 +196,30 @@ class ProjectsSection extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Tech Stack
                   Text(
                     'Technologies Used',
                     style: GoogleFonts.outfit(
-                      fontSize: 18,
+                      fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textWhite,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
+                    spacing: 6,
+                    runSpacing: 6,
                     children: project.techStack.map((tech) {
                       return Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 6,
+                          horizontal: 8,
+                          vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF2E2E33),
-                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.bgCard,
+                          borderRadius: BorderRadius.circular(8),
                           border: Border.all(
                             color: AppColors.glassBorder,
                           ),
@@ -199,7 +227,7 @@ class ProjectsSection extends StatelessWidget {
                         child: Text(
                           tech,
                           style: GoogleFonts.firaCode(
-                            fontSize: 12,
+                            fontSize: 11,
                             color: project.accentColor,
                             fontWeight: FontWeight.w500,
                           ),
@@ -219,24 +247,23 @@ class ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
-    final isTablet = Responsive.isTablet(context);
-    final isWide = isDesktop || isTablet;
+    final isSmall = Responsive.isSmallMobile(context);
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 60 : 20,
-        vertical: 60,
+        horizontal: isDesktop ? 60 : (isSmall ? 16 : 20),
+        vertical: isDesktop ? 50 : 30,
       ),
       child: Column(
         children: [
           const SectionHeader(
-            tag: ' 03. FEATURED WORK',
+            tag: '03. FEATURED WORK',
             title: 'Highlighted Projects',
             subtitle:
                 'Explore applications engineered with clean architecture, responsive Flutter UI, and modern state management.',
           ),
-          const SizedBox(height: 36),
-          isWide
+          const SizedBox(height: 28),
+          isDesktop
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -258,7 +285,7 @@ class ProjectsSection extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: CVData.projects.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 30),
+                  separatorBuilder: (context, index) => const SizedBox(height: 20),
                   itemBuilder: (context, index) {
                     final project = CVData.projects[index];
                     return _ProjectShowcaseCard(
@@ -291,190 +318,176 @@ class _ProjectShowcaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = !forceVertical && Responsive.isDesktop(context);
+    final isSmall = Responsive.isSmallMobile(context);
 
-    final mockupWidget = _buildDeviceMockup(project);
+    final mockupWidget = _buildDeviceMockup(context, project);
     final detailsWidget = _buildDetailsColumn(context, project);
 
     return GlassCard(
       glowColor: project.accentColor,
-      padding: EdgeInsets.all(isDesktop ? 36 : 22),
-      borderRadius: 28,
+      padding: EdgeInsets.all(isDesktop ? 30 : (isSmall ? 16 : 20)),
+      borderRadius: 20,
       child: isDesktop
           ? Row(
               children: isReversed
                   ? [
                       Expanded(flex: 5, child: mockupWidget),
-                      const SizedBox(width: 40),
+                      const SizedBox(width: 32),
                       Expanded(flex: 6, child: detailsWidget),
                     ]
                   : [
                       Expanded(flex: 6, child: detailsWidget),
-                      const SizedBox(width: 40),
+                      const SizedBox(width: 32),
                       Expanded(flex: 5, child: mockupWidget),
                     ],
             )
           : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 mockupWidget,
-                const SizedBox(height: 28),
+                const SizedBox(height: 20),
                 detailsWidget,
               ],
             ),
     );
   }
 
-  Widget _buildDeviceMockup(ProjectItem project) {
+  Widget _buildDeviceMockup(BuildContext context, ProjectItem project) {
+    final isDesktop = Responsive.isDesktop(context);
+    final isSmall = Responsive.isSmallMobile(context);
+    final double mockupHeight = isDesktop ? 300 : (isSmall ? 250 : 275);
+
     return Container(
-      height: 340,
+      height: mockupHeight,
       decoration: BoxDecoration(
-        color: const Color(0xFF1F1F23).withValues(alpha: 0.9),
-        borderRadius: BorderRadius.circular(24),
+        color: AppColors.bgDarkSurface,
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: project.accentColor.withValues(alpha: 0.4),
-          width: 1.5,
+          color: AppColors.glassBorder,
+          width: 1,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: project.accentColor.withValues(alpha: 0.2),
-            blurRadius: 28,
-            offset: const Offset(0, 10),
-          ),
-        ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(22),
-        child: Stack(
-          children: [
-            // Ambient subtle glow
-            Positioned(
-              top: -40,
-              right: -40,
-              child: Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: project.accentColor.withValues(alpha: 0.25),
-                ),
-              ),
-            ),
-
-            // Simulated App UI Screen
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        borderRadius: BorderRadius.circular(17),
+        child: Padding(
+          padding: EdgeInsets.all(isSmall ? 12 : 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Top Device Status Bar
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Top Device Status Bar
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(project.icon, color: project.accentColor, size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            project.title,
-                            style: GoogleFonts.outfit(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textWhite,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.wifi, size: 14, color: AppColors.textSecondary),
-                          const SizedBox(width: 6),
-                          Icon(Icons.battery_full, size: 14, color: AppColors.textSecondary),
-                        ],
+                      Icon(project.icon, color: project.accentColor, size: 16),
+                      const SizedBox(width: 6),
+                      Text(
+                        project.title,
+                        style: GoogleFonts.outfit(
+                          fontSize: isSmall ? 12 : 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textWhite,
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-
-                  // Feature Cards Mockup
-                  Expanded(
-                    child: ListView.separated(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: project.features.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 10),
-                      itemBuilder: (context, index) {
-                        final feat = project.features[index];
-                        return Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2E2E33).withValues(alpha: 0.6),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.06),
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(6),
-                                decoration: BoxDecoration(
-                                  color: project.accentColor.withValues(alpha: 0.15),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  feat.icon,
-                                  size: 16,
-                                  color: project.accentColor,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      feat.title,
-                                      style: GoogleFonts.outfit(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.textWhite,
-                                      ),
-                                    ),
-                                    Text(
-                                      feat.description,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 11,
-                                        color: AppColors.textSecondary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.wifi, size: 12, color: AppColors.textSecondary),
+                      const SizedBox(width: 4),
+                      Icon(Icons.battery_full, size: 12, color: AppColors.textSecondary),
+                    ],
                   ),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: 12),
+
+              // Feature Cards Mockup
+              Expanded(
+                child: ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: project.features.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 6),
+                  itemBuilder: (context, index) {
+                    final feat = project.features[index];
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isSmall ? 8 : 10,
+                        vertical: isSmall ? 6 : 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.bgCard,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: AppColors.glassBorder,
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: project.accentColor.withValues(alpha: 0.12),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              feat.icon,
+                              size: 13,
+                              color: project.accentColor,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  feat.title,
+                                  style: GoogleFonts.outfit(
+                                    fontSize: isSmall ? 11 : 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textWhite,
+                                  ),
+                                ),
+                                Text(
+                                  feat.description,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildDetailsColumn(BuildContext context, ProjectItem project) {
+    final isDesktop = Responsive.isDesktop(context);
+    final isSmall = Responsive.isSmallMobile(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Role & ID Pill
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
           decoration: BoxDecoration(
-            color: project.accentColor.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(16),
+            color: project.accentColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: project.accentColor.withValues(alpha: 0.3),
             ),
@@ -482,65 +495,65 @@ class _ProjectShowcaseCard extends StatelessWidget {
           child: Text(
             project.role.toUpperCase(),
             style: GoogleFonts.firaCode(
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: FontWeight.w700,
               color: project.accentColor,
-              letterSpacing: 0.8,
+              letterSpacing: 0.6,
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
 
         // Title
         Text(
           project.title,
           style: GoogleFonts.outfit(
-            fontSize: 30,
+            fontSize: isDesktop ? 26 : (isSmall ? 20 : 22),
             fontWeight: FontWeight.w800,
             color: AppColors.textWhite,
             letterSpacing: -0.5,
           ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 4),
 
         // Tagline
         Text(
           project.tagLine,
           style: GoogleFonts.inter(
-            fontSize: 15,
+            fontSize: isSmall ? 12.5 : 13.5,
             fontWeight: FontWeight.w600,
             color: project.accentColor,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
         // Description
         Text(
           project.description,
           style: GoogleFonts.inter(
-            fontSize: 15,
-            height: 1.6,
+            fontSize: isSmall ? 12.5 : 13.5,
+            height: 1.5,
             color: AppColors.textBody,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 14),
 
         // Tech Stack
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: 6,
+          runSpacing: 6,
           children: project.techStack.map((tech) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: const Color(0xFF27272A),
-                borderRadius: BorderRadius.circular(10),
+                color: AppColors.bgDarkSurface,
+                borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: AppColors.glassBorder),
               ),
               child: Text(
                 tech,
                 style: GoogleFonts.firaCode(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textSecondary,
                 ),
@@ -548,9 +561,9 @@ class _ProjectShowcaseCard extends StatelessWidget {
             );
           }).toList(),
         ),
-        const SizedBox(height: 26),
+        const SizedBox(height: 18),
 
-        // View Details Button
+        // View Details Button — safe against narrow constraints
         _ProjectDetailsButton(
           accentColor: project.accentColor,
           onTap: onViewDetails,
@@ -584,42 +597,36 @@ class _ProjectDetailsButtonState extends State<_ProjectDetailsButton> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
           decoration: BoxDecoration(
             color: _isHovered
-                ? widget.accentColor.withValues(alpha: 0.2)
-                : const Color(0xFF2E2E33).withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(20),
+                ? widget.accentColor.withValues(alpha: 0.15)
+                : AppColors.bgDarkSurface,
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
               color: _isHovered ? widget.accentColor : AppColors.glassBorder,
-              width: 1.5,
+              width: 1.2,
             ),
-            boxShadow: _isHovered
-                ? [
-                    BoxShadow(
-                      color: widget.accentColor.withValues(alpha: 0.35),
-                      blurRadius: 16,
-                      offset: const Offset(0, 4),
-                    ),
-                  ]
-                : null,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                'Explore Deep Architecture',
-                style: GoogleFonts.outfit(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: _isHovered ? widget.accentColor : AppColors.textWhite,
+              Flexible(
+                child: Text(
+                  'Explore Architecture',
+                  style: GoogleFonts.outfit(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w700,
+                    color: _isHovered ? widget.accentColor : AppColors.textWhite,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Icon(
                 Icons.arrow_forward_rounded,
-                size: 16,
+                size: 14,
                 color: _isHovered ? widget.accentColor : AppColors.textWhite,
               ),
             ],

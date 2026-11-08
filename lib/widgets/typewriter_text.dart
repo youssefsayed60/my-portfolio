@@ -16,7 +16,7 @@ class TypewriterText extends StatefulWidget {
     this.style,
     this.typingSpeed = const Duration(milliseconds: 70),
     this.deletingSpeed = const Duration(milliseconds: 35),
-    this.pauseDuration = const Duration(milliseconds: 1800),
+    this.pauseDuration = const Duration(milliseconds: 2000),
   });
 
   @override
@@ -39,7 +39,7 @@ class _TypewriterTextState extends State<TypewriterText> {
   }
 
   void _startCursorBlink() {
-    _cursorTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    _cursorTimer = Timer.periodic(const Duration(milliseconds: 600), (timer) {
       if (mounted) {
         setState(() => _showCursor = !_showCursor);
       }
@@ -47,6 +47,7 @@ class _TypewriterTextState extends State<TypewriterText> {
   }
 
   void _typeNext() {
+    if (!mounted) return;
     final currentFullText = widget.texts[_textIndex];
 
     if (!_isDeleting) {
@@ -56,8 +57,10 @@ class _TypewriterTextState extends State<TypewriterText> {
         _timer = Timer(widget.typingSpeed, _typeNext);
       } else {
         _timer = Timer(widget.pauseDuration, () {
-          _isDeleting = true;
-          _typeNext();
+          if (mounted) {
+            _isDeleting = true;
+            _typeNext();
+          }
         });
       }
     } else {
@@ -86,7 +89,7 @@ class _TypewriterTextState extends State<TypewriterText> {
         widget.texts[_textIndex].substring(0, _charIndex);
 
     final defaultStyle = GoogleFonts.outfit(
-      fontSize: 28,
+      fontSize: 26,
       fontWeight: FontWeight.w700,
       color: AppColors.cyan,
     );
@@ -96,13 +99,10 @@ class _TypewriterTextState extends State<TypewriterText> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Flexible(
-          child: ShaderMask(
-            shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
-            child: Text(
-              displayedText,
-              style: (widget.style ?? defaultStyle).copyWith(
-                color: Colors.white,
-              ),
+          child: Text(
+            displayedText,
+            style: (widget.style ?? defaultStyle).copyWith(
+              color: AppColors.cyan,
             ),
           ),
         ),

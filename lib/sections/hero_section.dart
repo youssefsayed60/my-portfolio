@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_colors.dart';
 import '../constants/cv_data.dart';
-import '../widgets/glass_container.dart';
 import '../widgets/responsive_builder.dart';
 import '../widgets/typewriter_text.dart';
 
@@ -21,33 +20,8 @@ class HeroSection extends StatefulWidget {
   State<HeroSection> createState() => _HeroSectionState();
 }
 
-class _HeroSectionState extends State<HeroSection>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _pulseController;
-  late Animation<double> _pulseAnimation;
-
-  // 3D Tilt offsets
-  double _tiltX = 0;
-  double _tiltY = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pulseController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    )..repeat(reverse: true);
-
-    _pulseAnimation = Tween<double>(begin: 0.95, end: 1.05).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _pulseController.dispose();
-    super.dispose();
-  }
+class _HeroSectionState extends State<HeroSection> {
+  bool _isPhotoHovered = false;
 
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
@@ -69,11 +43,15 @@ class _HeroSectionState extends State<HeroSection>
               constraints: const BoxConstraints(maxWidth: 420, maxHeight: 560),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppColors.cyan, width: 2),
+                border: Border.all(
+                  color: AppColors.cyan.withValues(alpha: 0.6),
+                  width: 1.5,
+                ),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.cyan.withValues(alpha: 0.4),
-                    blurRadius: 40,
+                    color: Colors.black.withValues(alpha: 0.5),
+                    blurRadius: 30,
+                    offset: const Offset(0, 10),
                   ),
                 ],
               ),
@@ -90,7 +68,7 @@ class _HeroSectionState extends State<HeroSection>
               right: 10,
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.close, color: Colors.white, size: 28),
+                icon: const Icon(Icons.close, color: Colors.white, size: 24),
                 style: IconButton.styleFrom(
                   backgroundColor: Colors.black.withValues(alpha: 0.6),
                 ),
@@ -105,11 +83,12 @@ class _HeroSectionState extends State<HeroSection>
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
+    final isSmall = Responsive.isSmallMobile(context);
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 60 : 20,
-        vertical: isDesktop ? 60 : 30,
+        horizontal: isDesktop ? 60 : (isSmall ? 16 : 20),
+        vertical: isDesktop ? 50 : 20,
       ),
       child: isDesktop
           ? Row(
@@ -117,13 +96,13 @@ class _HeroSectionState extends State<HeroSection>
               children: [
                 Expanded(flex: 6, child: _buildHeroText(context)),
                 const SizedBox(width: 50),
-                Expanded(flex: 5, child: _buildCreativePhoto(context)),
+                Expanded(flex: 5, child: _buildProfilePhoto(context)),
               ],
             )
           : Column(
               children: [
-                _buildCreativePhoto(context),
-                const SizedBox(height: 40),
+                _buildProfilePhoto(context),
+                const SizedBox(height: 28),
                 _buildHeroText(context),
               ],
             ),
@@ -132,74 +111,68 @@ class _HeroSectionState extends State<HeroSection>
 
   Widget _buildHeroText(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
+    final isSmall = Responsive.isSmallMobile(context);
 
     return Column(
       crossAxisAlignment:
           isDesktop ? CrossAxisAlignment.start : CrossAxisAlignment.center,
       children: [
-
+        // Greeting
         Text(
           'Hello, World! I am',
           textAlign: isDesktop ? TextAlign.start : TextAlign.center,
           style: GoogleFonts.firaCode(
-            fontSize: isDesktop ? 18 : 16,
+            fontSize: isDesktop ? 16 : (isSmall ? 13 : 14),
             fontWeight: FontWeight.w500,
             color: AppColors.cyan,
             letterSpacing: 1.5,
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 6),
 
-        // Full Name with Shader
-        ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [Colors.white, Color(0xFFE0E7FF), AppColors.cyan],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ).createShader(bounds),
-          child: Text(
-            CVData.name,
-            textAlign: isDesktop ? TextAlign.start : TextAlign.center,
-            style: GoogleFonts.outfit(
-              fontSize: isDesktop ? 56 : 40,
-              fontWeight: FontWeight.w900,
-              letterSpacing: -1.0,
-              height: 1.1,
-              color: Colors.white,
-            ),
+        // Full Name
+        Text(
+          CVData.name,
+          textAlign: isDesktop ? TextAlign.start : TextAlign.center,
+          style: GoogleFonts.outfit(
+            fontSize: isDesktop ? 52 : (isSmall ? 30 : 36),
+            fontWeight: FontWeight.w900,
+            letterSpacing: -1.0,
+            height: 1.15,
+            color: AppColors.textWhite,
           ),
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 10),
 
         // Typewriter Animated Title
         TypewriterText(
           texts: CVData.typewriterTitles,
           style: GoogleFonts.outfit(
-            fontSize: isDesktop ? 26 : 20,
+            fontSize: isDesktop ? 24 : (isSmall ? 16 : 18),
             fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 16),
 
-        // Bio from CV
+        // Bio
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 620),
+          constraints: const BoxConstraints(maxWidth: 600),
           child: Text(
             CVData.bio,
             textAlign: isDesktop ? TextAlign.start : TextAlign.center,
             style: GoogleFonts.inter(
-              fontSize: 16,
-              height: 1.7,
+              fontSize: isSmall ? 13 : 15,
+              height: 1.65,
               color: AppColors.textBody,
             ),
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 26),
 
         // Action Buttons
         Wrap(
-          spacing: 16,
-          runSpacing: 14,
+          spacing: 12,
+          runSpacing: 10,
           alignment: isDesktop ? WrapAlignment.start : WrapAlignment.center,
           children: [
             _HeroActionButton(
@@ -216,12 +189,12 @@ class _HeroSectionState extends State<HeroSection>
             ),
           ],
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 26),
 
         // Social Links Bar
         Wrap(
-          spacing: 12,
-          runSpacing: 12,
+          spacing: 8,
+          runSpacing: 8,
           alignment: isDesktop ? WrapAlignment.start : WrapAlignment.center,
           children: [
             _SocialPill(
@@ -250,177 +223,109 @@ class _HeroSectionState extends State<HeroSection>
     );
   }
 
-  Widget _buildCreativePhoto(BuildContext context) {
+  Widget _buildProfilePhoto(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
-    final cardWidth = isDesktop ? 340.0 : 260.0;
+    final screenW = MediaQuery.sizeOf(context).width;
+    final cardWidth = isDesktop ? 330.0 : (screenW * 0.65).clamp(190.0, 260.0);
     final cardHeight = cardWidth * 1.25;
 
-    return MouseRegion(
-      onHover: (event) {
-        if (!isDesktop) return;
-        final size = cardWidth;
-        final x = (event.localPosition.dx - size / 2) / (size / 2);
-        final y = (event.localPosition.dy - size / 2) / (size / 2);
-        setState(() {
-          _tiltX = -y * 0.15;
-          _tiltY = x * 0.15;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          _tiltX = 0;
-          _tiltY = 0;
-        });
-      },
-      child: Center(
-        child: Transform(
-          transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.001)
-            ..rotateX(_tiltX)
-            ..rotateY(_tiltY),
-          alignment: FractionalOffset.center,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              // Main Photo Container
-              GestureDetector(
-                onTap: () => _showImageLightbox(context),
-                child: Container(
-                  width: cardWidth,
-                  height: cardHeight,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(36),
-                    color: AppColors.bgDarkSurface,
-                    border: Border.all(color: Colors.white.withValues(alpha: 0.15), width: 2),
+    return Center(
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isPhotoHovered = true),
+        onExit: (_) => setState(() => _isPhotoHovered = false),
+        child: AnimatedScale(
+          scale: _isPhotoHovered ? 1.015 : 1.0,
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOutCubic,
+          child: GestureDetector(
+            onTap: () => _showImageLightbox(context),
+            child: Container(
+              width: cardWidth,
+              height: cardHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28),
+                color: AppColors.bgCard,
+                border: Border.all(
+                  color: _isPhotoHovered
+                      ? AppColors.cyan.withValues(alpha: 0.5)
+                      : AppColors.glassBorder,
+                  width: 1.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.3),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(34),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.asset(
-                          CVData.profileImage,
-                          fit: BoxFit.cover,
-                          alignment: Alignment.center,
-                          errorBuilder: (context, error, stackTrace) => Container(
-                            color: AppColors.bgCard,
-                            child: const Icon(
-                              Icons.person,
-                              size: 100,
-                              color: AppColors.cyan,
-                            ),
-                          ),
-                        ),
-
-                        // Subtle bottom gradient for readability
-                        Positioned.fill(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withValues(alpha: 0.4),
-                                ],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        // Click to Zoom Badge
-                        Positioned(
-                          top: 14,
-                          right: 14,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.6),
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: AppColors.cyan.withValues(alpha: 0.5),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.zoom_in_rounded,
-                              size: 18,
-                              color: AppColors.cyan,
-                            ),
-                          ),
-                        ),
-                      ],
+                  if (_isPhotoHovered)
+                    BoxShadow(
+                      color: AppColors.cyan.withValues(alpha: 0.1),
+                      blurRadius: 18,
+                      offset: const Offset(0, 4),
                     ),
-                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(26),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      CVData.profileImage,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        color: AppColors.bgCard,
+                        child: const Icon(
+                          Icons.person,
+                          size: 90,
+                          color: AppColors.cyan,
+                        ),
+                      ),
+                    ),
+
+                    // Subtle bottom gradient for depth
+                    Positioned.fill(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.35),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // Click to Zoom Badge
+                    Positioned(
+                      top: 14,
+                      right: 14,
+                      child: Container(
+                        padding: const EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withValues(alpha: 0.55),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.glassBorder,
+                          ),
+                        ),
+                        child: const Icon(
+                          Icons.zoom_in_rounded,
+                          size: 16,
+                          color: AppColors.textWhite,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-
-
-
-
-
-            ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _FloatingHeroBadge extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final Color color;
-
-  const _FloatingHeroBadge({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GlassCard(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      borderRadius: 18,
-      glowColor: color,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.18),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: color, size: 18),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.outfit(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textWhite,
-                ),
-              ),
-              Text(
-                subtitle,
-                style: GoogleFonts.inter(
-                  fontSize: 11,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }
@@ -448,6 +353,8 @@ class _HeroActionButtonState extends State<_HeroActionButton> {
 
   @override
   Widget build(BuildContext context) {
+    final isSmall = Responsive.isSmallMobile(context);
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -455,28 +362,35 @@ class _HeroActionButtonState extends State<_HeroActionButton> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 16),
+          padding: EdgeInsets.symmetric(
+            horizontal: isSmall ? 18 : 22,
+            vertical: isSmall ? 11 : 13,
+          ),
           transform: _isHovered
-              ? Matrix4.translationValues(0, -3, 0)
+              ? Matrix4.translationValues(0, -2, 0)
               : Matrix4.identity(),
           decoration: BoxDecoration(
             gradient: widget.isPrimary ? AppColors.primaryGradient : null,
             color: widget.isPrimary
                 ? null
-                : const Color(0xFF2E2E33).withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(30),
+                : (_isHovered
+                    ? AppColors.bgCardHover
+                    : AppColors.bgCard),
+            borderRadius: BorderRadius.circular(22),
             border: Border.all(
               color: widget.isPrimary
                   ? Colors.transparent
-                  : (_isHovered ? AppColors.cyan : AppColors.glassBorder),
-              width: 1.5,
+                  : (_isHovered ? AppColors.cyan.withValues(alpha: 0.5) : AppColors.glassBorder),
+              width: 1.2,
             ),
-            boxShadow: widget.isPrimary && _isHovered
+            boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: AppColors.cyan.withValues(alpha: 0.45),
-                      blurRadius: 24,
-                      offset: const Offset(0, 8),
+                      color: widget.isPrimary
+                          ? AppColors.cyan.withValues(alpha: 0.3)
+                          : Colors.black.withValues(alpha: 0.2),
+                      blurRadius: 14,
+                      offset: const Offset(0, 4),
                     ),
                   ]
                 : null,
@@ -486,19 +400,19 @@ class _HeroActionButtonState extends State<_HeroActionButton> {
             children: [
               Icon(
                 widget.icon,
-                size: 18,
+                size: isSmall ? 15 : 16,
                 color: widget.isPrimary
-                    ? const Color(0xFFF4F4F5)
+                    ? AppColors.textWhite
                     : (_isHovered ? AppColors.cyan : AppColors.textWhite),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Text(
                 widget.label,
                 style: GoogleFonts.outfit(
-                  fontSize: 15,
+                  fontSize: isSmall ? 13 : 14,
                   fontWeight: FontWeight.w700,
                   color: widget.isPrimary
-                      ? const Color(0xFFF4F4F5)
+                      ? AppColors.textWhite
                       : (_isHovered ? AppColors.cyan : AppColors.textWhite),
                 ),
               ),
@@ -530,22 +444,27 @@ class _SocialPillState extends State<_SocialPill> {
 
   @override
   Widget build(BuildContext context) {
+    final isSmall = Responsive.isSmallMobile(context);
+
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: GestureDetector(
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          duration: const Duration(milliseconds: 180),
+          padding: EdgeInsets.symmetric(
+            horizontal: isSmall ? 10 : 12,
+            vertical: isSmall ? 6 : 7,
+          ),
           decoration: BoxDecoration(
             color: _isHovered
-                ? AppColors.cyan.withValues(alpha: 0.15)
-                : const Color(0xFF27272A).withValues(alpha: 0.6),
-            borderRadius: BorderRadius.circular(20),
+                ? AppColors.cyan.withValues(alpha: 0.12)
+                : AppColors.bgCard,
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: _isHovered
-                  ? AppColors.cyan.withValues(alpha: 0.7)
+                  ? AppColors.cyan.withValues(alpha: 0.45)
                   : AppColors.glassBorder,
               width: 1,
             ),
@@ -555,14 +474,14 @@ class _SocialPillState extends State<_SocialPill> {
             children: [
               Icon(
                 widget.icon,
-                size: 15,
+                size: isSmall ? 13 : 14,
                 color: _isHovered ? AppColors.cyan : AppColors.textSecondary,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 6),
               Text(
                 widget.label,
                 style: GoogleFonts.inter(
-                  fontSize: 13,
+                  fontSize: isSmall ? 11 : 12,
                   fontWeight: FontWeight.w500,
                   color: _isHovered ? AppColors.textWhite : AppColors.textSecondary,
                 ),
@@ -574,4 +493,3 @@ class _SocialPillState extends State<_SocialPill> {
     );
   }
 }
-

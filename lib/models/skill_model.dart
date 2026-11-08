@@ -14,6 +14,7 @@ class SkillItem {
   final IconData icon;
   final SkillCategory category;
   final List<String> tags;
+  final String? url;
 
   const SkillItem({
     required this.name,
@@ -21,5 +22,14 @@ class SkillItem {
     required this.icon,
     required this.category,
     this.tags = const [],
+    this.url,
   });
+
+  /// Target URL to open: official website if provided, or Google search query.
+  String get targetUrl {
+    if (url != null && url!.trim().isNotEmpty) {
+      return url!;
+    }
+    return 'https://www.google.com/search?q=${Uri.encodeComponent(name)}';
+  }
 }

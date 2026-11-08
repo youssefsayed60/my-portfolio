@@ -12,17 +12,18 @@ class FooterSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = Responsive.isDesktop(context);
+    final isSmall = Responsive.isSmallMobile(context);
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 60 : 20,
-        vertical: 40,
+        horizontal: isDesktop ? 60 : (isSmall ? 16 : 20),
+        vertical: 30,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFF111113),
+        color: AppColors.bgDarkSurface,
         border: Border(
           top: BorderSide(
-            color: Colors.white.withValues(alpha: 0.08),
+            color: AppColors.glassBorder,
           ),
         ),
       ),
@@ -31,105 +32,81 @@ class FooterSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Logo
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: AppColors.primaryGradient,
+              // Logo & Title (overflow-safe)
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.cyan.withValues(alpha: 0.15),
+                        border: Border.all(
+                          color: AppColors.cyan.withValues(alpha: 0.3),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.flutter_dash,
+                        color: AppColors.cyan,
+                        size: 14,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.flutter_dash,
-                      color: Color(0xFFF4F4F5),
-                      size: 16,
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        '${CVData.name} • Flutter Developer',
+                        style: GoogleFonts.outfit(
+                          fontSize: isSmall ? 12.5 : 13.5,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textWhite,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    '${CVData.name} • Flutter Developer',
-                    style: GoogleFonts.outfit(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textWhite,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
 
               // Back To Top
               GestureDetector(
                 onTap: onBackToTop,
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2E2E33),
+                    color: AppColors.bgCard,
                     shape: BoxShape.circle,
                     border: Border.all(color: AppColors.glassBorder),
                   ),
                   child: const Icon(
                     Icons.keyboard_arrow_up_rounded,
                     color: AppColors.cyan,
-                    size: 20,
+                    size: 17,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           // Divider
           Container(
             height: 1,
-            color: Colors.white.withValues(alpha: 0.05),
+            color: AppColors.glassBorder,
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
+
+          // Copyright & Info
+          Text(
+            'Crafted with Flutter & Clean Architecture • © ${DateTime.now().year} ${CVData.name}',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.inter(
+              fontSize: isSmall ? 11 : 12,
+              color: AppColors.textMuted,
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
-class _FooterIcon extends StatefulWidget {
-  final IconData icon;
-  final VoidCallback onTap;
-
-  const _FooterIcon({required this.icon, required this.onTap});
-
-  @override
-  State<_FooterIcon> createState() => _FooterIconState();
-}
-
-class _FooterIconState extends State<_FooterIcon> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isHovered
-                ? AppColors.cyan.withValues(alpha: 0.2)
-                : const Color(0xFF27272A),
-            border: Border.all(
-              color: _isHovered ? AppColors.cyan : AppColors.glassBorder,
-            ),
-          ),
-          child: Icon(
-            widget.icon,
-            size: 15,
-            color: _isHovered ? AppColors.cyan : AppColors.textSecondary,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
