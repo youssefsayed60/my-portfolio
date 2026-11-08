@@ -40,7 +40,7 @@ class CVData {
     ExperienceItem(
       role: 'Flutter Developer',
       company: 'NTG Clarity',
-      period: '09/2025 â€“ Present',
+      period: '09/2025 - Present',
       duration: 'Ongoing',
       isCurrent: true,
       bulletPoints: [
@@ -63,7 +63,7 @@ class CVData {
     ExperienceItem(
       role: 'Flutter Developer Intern',
       company: 'NTG Clarity',
-      period: '09/2024 â€“ 09/2025',
+      period: '09/2024 - 09/2025',
       duration: '1 Year',
       isCurrent: false,
       bulletPoints: [
