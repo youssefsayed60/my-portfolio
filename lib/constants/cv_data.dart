@@ -16,7 +16,7 @@ class CVData {
 
   static const String bio =
       'Flutter developer with 3 years of hands-on experience in building cross-platform '
-      'mobile applications, including impactful experience at NTG Clarity. Skilled in creating '
+      'mobile applications, Skilled in creating '
       'responsive, high-performance apps with clean architecture and intuitive UI/UX design. '
       'Passionate about delivering efficient, user-centered mobile solutions and continuously '
       'improving through learning and innovation.';
