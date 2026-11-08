@@ -96,15 +96,6 @@ class FooterSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Copyright & Info
-          Text(
-            'Crafted with Flutter & Clean Architecture • © ${DateTime.now().year} ${CVData.name}',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: isSmall ? 11 : 12,
-              color: AppColors.textMuted,
-            ),
-          ),
         ],
       ),
     );
